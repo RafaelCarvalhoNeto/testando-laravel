@@ -8,14 +8,26 @@ use App\Card;
 class CardsController extends Controller
 {
     public function index() {
-        $cards = Card::all();
+        // $cards = Card::all();
+
+        $cards = Card::paginate(10);
+
+        // $cards = Card::where('id', '<=', '20')->get();
 
         if($cards){
-            return response()->json($cards, 200);
+            return view('cards.index')->with('cards', $cards);
 
         }
     }
+    public function add(){
+        return view('cards.create');
+    }
     public function create(Request $request){
+
+        $request->validate([
+            'title' => 'required|min:5',
+            'content' => 'required|min:20'
+        ]);
 
         $card = new Card;
 
@@ -25,13 +37,27 @@ class CardsController extends Controller
         $card->save();
 
         if($card){
-            return response()->json($card,201);
+            return view('cards.create')->with('success', 'Cartão inserido com sucesso');
         }
 
     }
-    public function edit(Request $request, $id){
-
+    public function edit($id){
         $card = Card::find($id);
+
+        if($card){
+            return view('cards.edit')->with('card', $card);
+        }
+
+    }
+
+    public function update(Request $request, $id){
+        
+        $request->validate([
+            'title' => 'required|min:5',
+            'content' => 'required|min:20'
+        ]);
+        $card = Card::find($id);
+
 
         $card->title = $request->title;
         $card->content = $request->content;
@@ -39,7 +65,10 @@ class CardsController extends Controller
         $card->update();
             
         if($card){
-            return response()->json($card,201);
+            return view('cards.edit')->with([
+                'card'=> $card,
+                'success' => 'Cartão alterado com sucesso'
+            ]);
         }
 
     }
@@ -48,7 +77,15 @@ class CardsController extends Controller
         $card = Card::find($id);
 
         if ($card->delete()){
-            return response()->json('Registro excluido com sucesso');
+
+            $cards = Card::all();
+
+
+
+            return view('cards.index')->with([
+                'cards' => $cards,
+                'success' => 'Registro excluido com sucesso'
+            ]);
 
         };
             
