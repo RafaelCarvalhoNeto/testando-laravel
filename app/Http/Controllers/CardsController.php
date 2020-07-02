@@ -78,7 +78,7 @@ class CardsController extends Controller
 
         if ($card->delete()){
 
-            $cards = Card::all();
+            $cards = Card::paginate(10);
 
 
 
