@@ -29,9 +29,23 @@ class CardsController extends Controller
             'content' => 'required|min:20'
         ]);
 
+        $image = $request->file('image');
+        if(empty($image)){
+            $pathRelative = null;
+        } else {
+            $image->storePublicly('uploads');
+            $absolutePath = public_path()."/storage/uploads";
+            $image_name = $image->getClientOriginalName();
+
+            $image->move($absolutePath, $image_name);
+
+            $pathRelative = "storage/uploads/$image_name";
+        }
+
         $card = new Card;
 
         $card->title = $request->title;
+        $card->image = $pathRelative;
         $card->content = $request->content;
 
         $card->save();
@@ -89,5 +103,17 @@ class CardsController extends Controller
 
         };
             
+    }
+
+    public function searchCard(Request $request){
+        $search = $request->input('search');
+        $cards = Card::where('title', 'like' ,'%' .$search. '%')->orWhere('content','like','%'.$search.'%')->paginate(10);
+
+
+        return view('cards.index')->with([
+            'search'=>$search,
+            'cards'=> $cards
+        ]);
+
     }
 }

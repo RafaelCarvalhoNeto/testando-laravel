@@ -11,10 +11,10 @@ class CardsTableSeeder extends Seeder
      */
     public function run()
     {
-        Card::create([
-            'title' => 'Card Principal',
-            'content'=> 'Conteudo do card princpal'
-        ]);
+        // Card::create([
+        //     'title' => 'Card Principal',
+        //     'content'=> 'Conteudo do card princpal'
+        // ]);
         
         factory(Card::class, 20)->create();
     }

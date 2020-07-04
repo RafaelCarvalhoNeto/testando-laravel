@@ -7,9 +7,15 @@
         @csrf
         {{ method_field('POST') }}
         <div class="form-group col-md-6 col-sm-12">
-            <label for="title">Título</label>
+            <label for="image">Título</label>
             <input type="text" name="title"  value="{{ old('title') }}" class="form-control{{$errors->has('title') ? ' is-invalid':''}}" id="title">
             <div class="invalid-feedback">{{ $errors->first('title') }}</div>
+        </div>
+
+        <div class="form-group col-md-6 col-sm-12">
+            <label for="image">Título</label>
+            <input type="file" name="image"  value="{{ old('image') }}" class="form-control{{$errors->has('image') ? ' is-invalid':''}}" id="image">
+            <div class="invalid-feedback">{{ $errors->first('image') }}</div>
         </div>
 
         <div class="form-group col-md-6 col-sm-12">

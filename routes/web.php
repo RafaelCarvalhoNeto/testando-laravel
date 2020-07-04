@@ -26,9 +26,16 @@ Route::put('/cards/update/{id}', 'CardsController@update');
 // alterando card
 Route::delete('/cards/remove/{id}', 'CardsController@delete');
 
+Route::get('/cards/search', 'CardsController@searchCard');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+
+
+
 
 
 Route::group(['namespace' => 'Form'], function(){
